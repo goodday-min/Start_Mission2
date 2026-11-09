@@ -74,7 +74,8 @@ class QuizGame:
             print("2. 퀴즈 추가")
             print("3. 점수 확인")
             print("4. 종료")
-
+            print("5. 퀴즈 목록 보기")
+            
             choice = input("선택: ")
 
             if choice == "1":
@@ -85,10 +86,28 @@ class QuizGame:
                 print(f"\n현재 점수: {self.score}점")
             elif choice == "4":
                 print("게임을 종료합니다. 👋")
-                break
+            elif choice == "5":
+                self.list_quizzes()
             else:
-                print("1~4 중에서 선택해주세요.")
+                print("1~5 중에서 선택해주세요.")
 
+    def list_quizzes(self):
+            if not self.quizzes:
+                print("등록된 퀴즈가 없습니다.")
+                return
+            
+            print("\n=== 퀴즈 목록 ===")
+            for i, quiz in enumerate(self.quizzes, 1):
+                # quiz가 딕셔너리일 때
+                if isinstance(quiz, dict):
+                    print(f"{i}. {quiz['question']} → 정답: {quiz['answer']}")
+                # quiz가 객체일 때
+                else:
+                    print(f"{i}. {quiz.question} → 정답: {quiz.answer}")
+            print(f"총 {len(self.quizzes)}개")
+    
+    
+    
 # 실행
 game = QuizGame()
 game.run()
