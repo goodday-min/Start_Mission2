@@ -1,7 +1,12 @@
 
 import sys
 
+from default_quizzes import get_default_quizzes
+
 LINE = "=" * 40
+SUB_LINE = "-" * 40
+
+quizzes = get_default_quizzes()   # 전체 퀴즈 목록 (프로그램이 켜져 있는 동안 메모리에 보관)
 
 
 def read_int(prompt, low, high):
@@ -35,8 +40,31 @@ def show_menu():
 
 
 # --- 아직 구현하지 않은 기능 (이후 단계에서 하나씩 진짜 함수로 교체) ---
+
 def play_quiz():
-    print("(준비 중) 퀴즈 풀기")
+    if not quizzes:                                   # 퀴즈가 없는 경우
+        print("⚠️ 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
+        return
+
+    total = len(quizzes)
+    print(f"📝 퀴즈를 시작합니다! (총 {total}문제)")
+    correct = 0
+    for number, quiz in enumerate(quizzes, start=1):
+        print(SUB_LINE)
+        quiz.display(number)
+        user_answer = read_int("정답 입력: ", 1, 4)
+        if quiz.is_correct(user_answer):
+            print("✅ 정답입니다!")
+            correct += 1
+        else:
+            print(f"❌ 오답입니다. 정답은 {quiz.answer}번입니다.")
+
+    score = correct * 100 // total
+    print(LINE)
+    print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
+    print(LINE)
+    
+
 
 
 def add_quiz():
