@@ -3,7 +3,11 @@
         {
             "question": "1",
             "answer": "1"
+        },
+        {
+            "question": "파이썬에서 출력 함수는?",
+            "answer": "print"
         }
     ],
-    "score": 1
+    "score": 2
 }
