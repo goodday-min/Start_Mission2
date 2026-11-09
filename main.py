@@ -2,6 +2,7 @@
 import sys
 
 from default_quizzes import get_default_quizzes
+from quiz import Quiz
 
 LINE = "=" * 40
 SUB_LINE = "-" * 40
@@ -65,10 +66,22 @@ def play_quiz():
     print(LINE)
     
 
-
+def read_text(prompt):
+    """빈 입력이 아닌 문자열을 받을 때까지 다시 묻는다."""
+    while True:
+        text = input(prompt).strip()
+        if text == "":
+            print("⚠️ 빈 입력입니다. 내용을 입력하세요.")
+            continue
+        return text
 
 def add_quiz():
-    print("(준비 중) 퀴즈 추가")
+    print("📌 새로운 퀴즈를 추가합니다.")
+    question = read_text("문제를 입력하세요: ")
+    choices = [read_text(f"선택지 {i}: ") for i in range(1, 5)]
+    answer = read_int("정답 번호 (1-4): ", 1, 4)
+    quizzes.append(Quiz(question, choices, answer))
+    print("✅ 퀴즈가 추가되었습니다!")
 
 
 def list_quizzes():
