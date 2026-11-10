@@ -1,8 +1,3 @@
-
-```
-
-**(2)** `main.py` 는 **전체를 지우고** 아래로 교체(짧아집니다):
-```python
 """퀴즈 게임 실행 파일: python main.py"""
 
 import sys
