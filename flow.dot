@@ -1,0 +1,78 @@
+digraph G {
+  graph [rankdir=TB, fontname="Noto Sans CJK KR", fontsize=20, labelloc=t, pad=0.4, nodesep=0.35, ranksep=0.8, newrank=true, dpi=130,
+         label="퀴즈 게임 함수 호출 흐름도 (main.py → quiz_game.py → quiz.py)\n"];
+  node  [shape=box, style="rounded,filled", fontname="Noto Sans CJK KR", fontsize=13, fillcolor="#FFFFFF", color="#555555", margin="0.18,0.10"];
+  edge  [fontname="Noto Sans CJK KR", fontsize=11, color="#555555"];
+
+  start [label="python main.py", shape=oval, fillcolor="#222222", fontcolor=white];
+  main  [label="main()\nUTF-8 출력 설정", fillcolor="#FFE9A8"];
+  run   [label="QuizGame().run()\n(__init__ 후 run 호출)", fillcolor="#FFE9A8"];
+
+  subgraph cluster_load { label="① 시작 시 데이터 불러오기"; style="rounded,dashed"; color="#999999"; fontname="Noto Sans CJK KR";
+    load  [label="load_state()", fillcolor="#D6E8FF"];
+    defd  [label="use_default_data()\n→ get_default_quizzes()", fillcolor="#EEEEEE"];
+    from  [label="Quiz.from_dict()\n(저장된 퀴즈 복원)", fillcolor="#EEEEEE"];
+    save0 [label="save_state()\n(손상 시 초기화 후 저장)", fillcolor="#FFD6D6"];
+  }
+
+  menu [label="while True 반복\nshow_menu()\nread_int(\"선택\", 1, 6)\n(각 기능이 끝나면 여기로 돌아옴)", fillcolor="#D6E8FF"];
+
+  subgraph cluster_play { label="1 입력 → play_quiz()"; style="rounded,filled"; fillcolor="#F4F9F1"; color="#7BAF6B"; fontname="Noto Sans CJK KR";
+    p1 [label="read_int(문제 수)"];
+    p2 [label="random.sample()\n문제 뽑기"];
+    p3 [label="문제마다 반복:\nquiz.display(번호)"];
+    p4 [label="ask_answer(quiz)\nread_int(정답, 0~4)"];
+    p5 [label="0 입력 → 힌트 출력\n(다시 입력)", shape=note, fillcolor="#FFF8D6"];
+    p6 [label="quiz.is_correct()\n정답/오답 판정"];
+    p7 [label="최고 점수 갱신 시\nsave_state()", fillcolor="#FFD6D6"];
+    p1 -> p2 -> p3 -> p4 -> p6 -> p7;
+    p4 -> p5 [dir=both, style=dashed];
+    p6 -> p3 [label="다음 문제", style=dashed, constraint=false];
+  }
+
+  subgraph cluster_add { label="2 입력 → add_quiz()"; style="rounded,filled"; fillcolor="#F1F5FB"; color="#6B8FC8"; fontname="Noto Sans CJK KR";
+    a1 [label="read_text() × 5\n(문제 / 선택지 4개)"];
+    a2 [label="read_int(정답 1~4)\nread_text(힌트)"];
+    a3 [label="Quiz(...) 생성 후\nquizzes.append()"];
+    a4 [label="save_state()", fillcolor="#FFD6D6"];
+    a1 -> a2 -> a3 -> a4;
+  }
+
+  subgraph cluster_list { label="3 입력 → list_quizzes()"; style="rounded,filled"; fillcolor="#FBF4F1"; color="#C89A6B"; fontname="Noto Sans CJK KR";
+    l1 [label="목록 출력"];
+  }
+
+  subgraph cluster_score { label="4 입력 → show_score()"; style="rounded,filled"; fillcolor="#F8F1FB"; color="#9B6BC8"; fontname="Noto Sans CJK KR";
+    s1 [label="최고 점수 출력"];
+  }
+
+  subgraph cluster_del { label="5 입력 → delete_quiz()"; style="rounded,filled"; fillcolor="#FBF1F1"; color="#C86B6B"; fontname="Noto Sans CJK KR";
+    d1 [label="list_quizzes()"];
+    d2 [label="read_int(삭제 번호, 0~N)\n0이면 취소"];
+    d3 [label="quizzes.pop()"];
+    d4 [label="save_state()", fillcolor="#FFD6D6"];
+    d1 -> d2 -> d3 -> d4;
+  }
+
+  quit  [label="6 입력\nsave_state() → return\n프로그램 종료", fillcolor="#FFD6D6"];
+  intr  [label="Ctrl+C / EOF\nsave_state() 후 종료", fillcolor="#FFD6D6"];
+  endn  [label="종료", shape=oval, fillcolor="#222222", fontcolor=white];
+
+  start -> main -> run -> load;
+  load -> defd [label="파일 없음"];
+  load -> from [label="정상 파일"];
+  load -> save0 [label="손상 파일"];
+  save0 -> defd [dir=back, style=invis];
+  defd -> menu; from -> menu; save0 -> menu;
+
+  menu -> p1 [label="1", minlen=2];
+  menu -> a1 [label="2", minlen=2];
+  menu -> l1 [label="3", minlen=2];
+  menu -> s1 [label="4", minlen=2];
+  menu -> d1 [label="5", minlen=2];
+  menu -> quit [label="6", minlen=2];
+  menu -> intr [style=dotted, label="예외", minlen=2];
+
+
+  quit -> endn; intr -> endn;
+}
