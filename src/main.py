@@ -87,8 +87,14 @@ def add_quiz():
 
 
 def list_quizzes():
-    print("(준비 중) 퀴즈 목록")
-
+    if not quizzes:
+        print("⚠️ 등록된 퀴즈가 없습니다.")
+        return
+    print(f"📋 등록된 퀴즈 목록 (총 {len(quizzes)}개)")
+    print(SUB_LINE)
+    for i, quiz in enumerate(quizzes, start=1):
+        print(f" [{i}] {quiz.question}")
+    print(SUB_LINE)
 
 def show_score():
     print("(준비 중) 점수 확인")
