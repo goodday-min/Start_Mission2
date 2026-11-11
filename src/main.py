@@ -10,6 +10,8 @@ LINE = "=" * 40
 SUB_LINE = "-" * 40
 
 quizzes = get_default_quizzes()   # 전체 퀴즈 목록 (프로그램이 켜져 있는 동안 메모리에 보관)
+best_score = None                 # 최고 점수 (아직 안 풀었으면 None)
+
 
 def read_int(prompt, low, high):
     """low~high 사이 정수를 받을 때까지 다시 묻는다."""
@@ -53,8 +55,8 @@ def read_text(prompt):
 
 # --- 아직 구현하지 않은 기능 (이후 단계에서 하나씩 진짜 함수로 교체) ---
 def play_quiz():
-    
-    if not quizzes:                                   # 퀴즈가 없는 경우
+    global best_score                                 # 전역 변수 best_score를 이 함수에서 바꾸겠다는 선언
+    if not quizzes:
         print("⚠️ 등록된 퀴즈가 없습니다. 먼저 퀴즈를 추가해 주세요.")
         return
 
@@ -74,6 +76,9 @@ def play_quiz():
     score = correct * 100 // total
     print(LINE)
     print(f"🏆 결과: {total}문제 중 {correct}문제 정답! ({score}점)")
+    if best_score is None or score > best_score:      # 최고 점수와 비교 후 갱신
+        best_score = score
+        print("🎉 새로운 최고 점수입니다!")
     print(LINE)
 
 
@@ -96,9 +101,12 @@ def list_quizzes():
         print(f" [{i}] {quiz.question}")
     print(SUB_LINE)
 
+
 def show_score():
-    print("(준비 중) 점수 확인")
-# ------------------------------------------------------------------
+    if best_score is None:
+        print("⚠️ 아직 퀴즈를 풀지 않았습니다. 퀴즈를 풀고 다시 확인해 주세요.")
+        return
+    print(f"🏆 최고 점수: {best_score}점")
 
 
 def main():
