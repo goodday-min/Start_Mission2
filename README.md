@@ -342,7 +342,7 @@ with open(tmp_file, "w", encoding="utf-8") as f:
 ```bash
 # 윈도우 (PowerShell 또는 명령 프롬프트)
 copy state.json state.json.bak
-
+``` 
 퀴즈를 많이 추가한 뒤나 중요한 변경 전에 이 명령으로 백업해 둔다.  
 
 
@@ -499,12 +499,7 @@ if __name__ == "__main__":
     main()
 ```
 
-### 🔍 입력 검증
-- **무엇인가**: 사용자가 넣은 값을 **그대로 믿지 않고 먼저 검사**하는 것입니다. 사용자는 빈 입력, 글자, 범위 밖 숫자 등 예상 못 한 값을 얼마든지 넣을 수 있습니다.
-- **왜 쓰는가**: 검사 없이 쓰면 프로그램이 오류로 멈추거나 잘못된 데이터가 저장됩니다.
-- **이 과제에서는**: 숫자 입력은 `read_int`가 ① 앞뒤 공백 제거(`strip()`) ② 빈 입력 ③ 숫자 변환 실패 ④ 범위 밖 숫자를 차례로 검사하고, 어느 하나라도 걸리면 안내 후 다시 묻습니다. 글자 입력은 `read_text`가 빈 입력을 걸러 냅니다. (위의 `read_int` 코드 참고)
-
-#  🔍 객체와 `dict`/JSON 사이의 변환 (직렬화)
+###  🔍 객체와 `dict`/ JSON 사이의 변환 (직렬화)
 - **무엇인가**: JSON 파일에는 `Quiz` 객체를 그대로 저장할 수 없으므로, 저장할 때는 **객체 → `dict` → JSON**으로, 불러올 때는 **JSON → `dict` → 객체**로 바꿉니다.
 - **왜 쓰는가**: 프로그램 안의 객체와 파일 속 텍스트는 형태가 다르기 때문에, 서로 오갈 수 있는 변환 통로가 필요합니다.
 - **이 과제에서는**: `Quiz.to_dict()`가 객체를 `dict`로, `Quiz.from_dict()`가 `dict`를 객체로 바꿉니다. 불러올 때는 파일이 손상되었을 수 있으므로, `from_dict()`가 형식을 검사해서 이상하면 `ValueError`를 일으키고 `load_state()`의 `except`가 받아 처리합니다.
@@ -531,32 +526,3 @@ with open(tmp_file, "w", encoding="utf-8") as f:
 tmp_file.replace(self.state_file)       # 쓰기에 성공한 뒤에만 원래 파일과 교체
 ```
 
-### 🔍 함수를 값처럼 쓰기: 메뉴 분기
-- **무엇인가**: 파이썬에서는 함수도 변수에 담거나 `dict`의 값으로 넣을 수 있습니다. 이름 뒤에 `()`를 붙이면 그때 실행됩니다.
-- **왜 쓰는가**: `if`를 번호마다 길게 나열하는 대신, "번호 → 실행할 함수" 표를 만들어 짧고 읽기 쉽게 분기할 수 있습니다.
-- **이 과제에서는** (`run`):
-```python
-actions = {
-    1: self.play_quiz,
-    2: self.add_quiz,
-    3: self.list_quizzes,
-    4: self.show_score,
-    5: self.delete_quiz,
-}
-...
-actions[choice]()     # choice가 2이면 self.add_quiz()가 실행됨
-```
-
-### 🔍 자주 쓰인 편의 문법
-| 문법 | 의미 | 이 과제에서 쓰인 곳 |
-|---|---|---|
-| f-string | 문자열 안에 `{}`로 변수 값을 넣기 | `print(f"📝 퀴즈를 시작합니다! (총 {count}문제)")` |
-| `enumerate` | 반복하면서 번호도 함께 얻기 | `for number, quiz in enumerate(questions, start=1)` |
-| `//` (정수 나눗셈) | 나눈 몫만 구하기 | `score = correct * 100 // count` (소수점 없는 점수) |
-| 리스트 컴프리헨션 | 반복해서 `list`를 한 줄로 만들기 | `choices = [read_text(f"선택지 {i}: ") for i in range(1, 5)]` |
-| `random.sample` | 중복 없이 무작위로 뽑기 | `questions = random.sample(self.quizzes, count)` |
-| 상수(대문자 이름) | 바뀌지 않는 값에 붙이는 관례적 이름 | `LINE = "=" * 40`, `STATE_FILE` |
-
-### `.gitignore`와 커밋 메시지
-- **`.gitignore`**: Git이 **추적하지 않을 파일**을 적어 두는 파일입니다. 파이썬이 자동으로 만드는 캐시(`__pycache__/`, `*.pyc`), 임시 파일(`*.tmp`), 편집기 설정(`.vscode/`, `.idea/`)처럼 코드가 아닌 파일이 저장소에 섞이지 않게 합니다.
-- **커밋 메시지**: "무엇을 바꿨는지"가 드러나게 씁니다. `Feat: 기능 추가`, `Fix: 오류 수정`, `Docs: 문서 수정`, `Refactor: 구조 개선`처럼 앞에 종류를 붙이면 이력을 훑어볼 때 이해하기 쉽습니다.
