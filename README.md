@@ -54,7 +54,7 @@ Python 3.10 이상이 필요합니다. 확인: `python --version`
 ###  함수 호출 흐름
 `main()`에서 시작해서 메뉴 입력(1~6)에 따라 어떤 함수가 호출되는지 나타낸 그림입니다.
 
-![함수 호출 흐름도](quiz_flow.png)
+![함수 호출 흐름도](img/quiz_flow.png)
 
 ### 데이터 파일 설명 (`state.json`)
 - 경로: 프로젝트 루트의 `state.json` (UTF-8, 처음 저장할 때 자동 생성)
