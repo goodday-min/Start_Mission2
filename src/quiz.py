@@ -2,12 +2,13 @@
 
 
 class Quiz:
-    """문제(question), 선택지 4개(choices), 정답 번호 1~4(answer)를 가진다."""
+    """문제(question), 선택지 4개(choices), 정답 번호 1~4(answer), 힌트(hint)를 가진다."""
 
-    def __init__(self, question, choices, answer):
+    def __init__(self, question, choices, answer, hint=""):
         self.question = question
         self.choices = choices
         self.answer = answer  # 1~4 중 하나의 번호
+        self.hint = hint      # 보너스: 힌트 (없으면 빈 문자열)
 
     def display(self, number=None):
         """문제와 선택지를 화면에 출력한다."""
@@ -27,6 +28,7 @@ class Quiz:
             "question": self.question,
             "choices": self.choices,
             "answer": self.answer,
+            "hint": self.hint,
         }
 
     @staticmethod
@@ -35,6 +37,7 @@ class Quiz:
         question = data["question"]
         choices = data["choices"]
         answer = data["answer"]
+        hint = data.get("hint", "")   # 힌트가 없는 예전 데이터도 읽을 수 있게 기본값 사용
         if not isinstance(question, str) or not question.strip():
             raise ValueError("question 형식 오류")
         if not isinstance(choices, list) or len(choices) != 4:
@@ -43,4 +46,6 @@ class Quiz:
             raise ValueError("choices 형식 오류")
         if isinstance(answer, bool) or not isinstance(answer, int) or not 1 <= answer <= 4:
             raise ValueError("answer는 1~4여야 합니다")
-        return Quiz(question, choices, answer)
+        if not isinstance(hint, str):
+            raise ValueError("hint 형식 오류")
+        return Quiz(question, choices, answer, hint)
