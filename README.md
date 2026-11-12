@@ -338,11 +338,21 @@ except (KeyboardInterrupt, EOFError):
   - `Refactor: QuizGame 클래스로 게임 로직 분리`
   - `state.json 저장/불러오기 구현 (파일 없음/손상 처리)`   
 
-  > git log --online --graph 스크린샷
+## Git 기본 명령어
+
+| 명령어 | 하는 일 | 사용 예 |
+|---|---|---|
+| `git init` | 현재 폴더를 Git 저장소로 만든다. 이때부터 변경 이력을 추적할 수 있다. | `git init` |
+| `git add` | 변경한 파일을 다음 커밋에 포함할 대상(스테이징 영역)으로 올린다. | `git add main.py` |
+| `git commit` | 스테이징한 변경 내용을 설명 메시지와 함께 하나의 기록(커밋)으로 저장한다. 내 컴퓨터에만 저장된다. | `git commit -m "Feat: 메뉴 기능 구현"` |
+| `git push` | 내 컴퓨터의 커밋을 GitHub 같은 원격 저장소로 올린다. | `git push origin main` |
+| `git pull` | 원격 저장소의 새 커밋을 가져와서 내 작업 폴더에 합친다. | `git pull` |
+| `git checkout` | 다른 브랜치로 이동한다. `-b` 옵션을 쓰면 새 브랜치를 만들면서 이동한다. | `git checkout -b feature/play-quiz` |
+| `git clone` | 원격 저장소 전체(코드와 커밋 이력)를 내 컴퓨터에 복제한다. | `git clone <저장소 URL>` |
+| `git branch` | 브랜치 목록을 보여주거나, 브랜치를 만들고 삭제한다. 현재 브랜치에는 `*` 표시가 붙는다. | `git branch`, `git branch -d feature/play-quiz` |
+| `git merge` | 다른 브랜치의 작업 내용을 현재 브랜치로 합친다. `--no-ff` 옵션을 쓰면 병합 기록(merge commit)을 반드시 남긴다. | `git merge --no-ff feature/play-quiz` |
+| `git log` | 커밋 이력을 보여준다. `--oneline --graph` 옵션을 쓰면 한 줄씩, 브랜치 갈래를 그림으로 볼 수 있다. | `git log --oneline --graph` |
   
-  <img width="960" height="250" alt="image" src="https://github.com/user-attachments/assets/f112d584-eba9-479e-a09d-4c2a10c96974" />
-
-
 
 #### 기본 명령어 7가지
 작업 흐름은 **작업 폴더에서 수정 → `add`로 커밋할 것 선택 → `commit`으로 로컬에 기록 → `push`로 원격(GitHub)에 올리기**입니다.
@@ -362,9 +372,9 @@ except (KeyboardInterrupt, EOFError):
 - **병합(merge)**: 브랜치에서 완성한 기능을 `main`에 합치는 것입니다. 기능 개발은 브랜치에서 하고, 완성되면 `main`으로 합치는 방식이 협업의 기본입니다.
 - **이 과제에서는**: "퀴즈 풀기" 기능을 별도 브랜치에서 만든 뒤 `main`에 병합했습니다. (커밋 이력의 `Merge: 퀴즈 풀기 브랜치 병합`)
   
-> 브랜치 생성과 병합 스크린 샷
-
-<img width="687" height="200" alt="image" src="https://github.com/user-attachments/assets/26190e14-76c7-41e0-a1e0-b5da583cd3df" />
+| commit 이력 (git log --oneline) 스크린샷 | 브랜치 생성과 병합(git log --oneline --graph) 스크린샷 |
+|---|---|
+|<img width="1000" height="250" alt="image" src="https://github.com/user-attachments/assets/1feb5cdf-890a-4c50-8fed-dc9064e42aa4" />|<img width="1000" height="250" alt="image" src="https://github.com/user-attachments/assets/bfc34aa9-9dfd-4a29-adab-45995cc48bd3" />|
 
 
 #### `clone`과 `pull`
@@ -372,10 +382,11 @@ except (KeyboardInterrupt, EOFError):
 - **`pull`**: 이미 가진 저장소에서 **원격의 새 변경을 가져올 때** 반복해서 씁니다.
 - **이 과제에서는**: 저장소를 다른 폴더에 `clone`한 뒤 거기서 수정하고 `push`하고, 원래 작업 폴더에서 `pull`로 변경이 반영되는지 확인하는 실습을 합니다. 다른 곳에서 바뀐 내용이 내 폴더로 들어오는 흐름을 직접 경험하는 것이 목적입니다.
 
-> clone 생성 및 pull 스크린샷
 
-<img width="1200" height="150" alt="image" src="https://github.com/user-attachments/assets/2e23795a-ecd4-40d6-a8db-54f4c529ccf4" />
-<img width="1200" height="400" alt="image" src="https://github.com/user-attachments/assets/ec012391-174f-40f9-a695-d5fb1ab20c09" />
+| clone 생성 스크린샷 | push, pull 스크린샷 |
+|---|---|
+|<img width="1200" height="150" alt="image" src="https://github.com/user-attachments/assets/2e23795a-ecd4-40d6-a8db-54f4c529ccf4" />|<img width="1200" height="400" alt="image" src="https://github.com/user-attachments/assets/ec012391-174f-40f9-a695-d5fb1ab20c09" />|
+
 
 ---
 
